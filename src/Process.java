@@ -90,4 +90,10 @@ public class Process extends Thread {
 	 public static ProcessState getProcessState(Process p) {
 		 return p.status;
 	}
+	 
+	 //made to be able to check the process ID.
+	 public int getProcessID() {
+		 return processID;
+	 }
+	 
 }

@@ -4,13 +4,60 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 
 
 public class OperatingSystem {
 	
+	//removed static reference 
+	
 	public static ArrayList<Thread> ProcessTable;
+	
+	//queues used for the scheduling algorithm
+	/*
+	 * pro tip :P
+	 * LinkedList.removeFirst(); - removes the first item that was added to the queue
+	 * 
+	 * LinkedList.addLast - adds to the end of the linked list, check out its use:
+	 * https://www.geeksforgeeks.org/linkedlist-addlast-method-in-java/
+	 * 
+	 * TODO: dont forget to initialize stuff 
+	 */
+	
+	public static LinkedList<Process> readyQueue;
+	public static LinkedList<Process> blockedReadQueue;
+	public static LinkedList<Process> blockedWriteQueue;
+	public static LinkedList<Process> blockedPrintQueue;
+	public static LinkedList<Process> blockedInputQueue;
+	
+	//getters for each queue reference
+	//semaphores are only responsible for adding stuff in the blocked queue and once unblocked, to the ready queue
+	
+	public static LinkedList<Process> getBlockedReadQueue(){
+		return blockedReadQueue;
+	}
+	
+	
+	public static LinkedList<Process> getBlockedWriteQueue(){
+		return blockedWriteQueue;
+	}
+	
+	public static LinkedList<Process> getBlockedPrintQueue(){
+		return blockedPrintQueue;
+	}
+	
+	public static LinkedList<Process> getBlockedInputQueue(){
+		return blockedInputQueue;
+	}
+	
+	public static LinkedList<Process> getReadyQueue(){
+		return readyQueue;
+	}
+	
+	
+	
 
 //	public static int activeProcess= 0;
 	//system calls:
