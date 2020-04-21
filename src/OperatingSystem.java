@@ -11,8 +11,6 @@ import java.util.concurrent.Semaphore;
 
 public class OperatingSystem {
 	
-	//removed static reference 
-	
 	public static ArrayList<Thread> ProcessTable = new ArrayList<Thread>();
 	
 	//queues used for the scheduling algorithm
@@ -31,6 +29,13 @@ public class OperatingSystem {
 	public static LinkedList<Process> blockedWriteQueue = new LinkedList<Process>();
 	public static LinkedList<Process> blockedPrintQueue = new LinkedList<Process>();
 	public static LinkedList<Process> blockedInputQueue = new LinkedList<Process>();
+	
+	/*used semaphores*/
+	
+	public static BinarySemaphore read = new BinarySemaphore();
+	public static BinarySemaphore write = new BinarySemaphore();
+	public static BinarySemaphore print = new BinarySemaphore();
+	public static BinarySemaphore input = new BinarySemaphore();
 	
 	//getters for each queue reference
 	//semaphores are only responsible for adding stuff in the blocked queue and once unblocked, to the ready queue
@@ -56,9 +61,26 @@ public class OperatingSystem {
 		return readyQueue;
 	}
 	
+	//getters for each semaphore
+	public static BinarySemaphore getReadSemaphore() {
+		return read;
+	}
 	
+	public static BinarySemaphore getWriteSemaphore() {
+		return write;
+	}
+	
+	public static BinarySemaphore getPrintSemaphore() {
+		return print;
+	}
+	
+	public static BinarySemaphore getInputSemaphore() {
+		return input;
+	}
 	
 
+	
+//basant didnt write the rest of the comments
 //	public static int activeProcess= 0;
 	//system calls:
 	// 1- Read from File
