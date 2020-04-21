@@ -40,14 +40,14 @@ public class BinarySemaphore {
 			
 			
 			//semWait keeps the process busy as long as it's not allowed to claim the resource.
-			while(value ==0 || value ==1) {
+			while(value ==0) {
 				//if someone released the resource, and the process is the one to be freed, 
 				//then exit the busy wait.
-				if(value ==1 && p == freeThisProcess) { //TODO: (need to confirm) reference check - IDs MAY be repeated!
+				if(p == freeThisProcess) { //TODO: (need to confirm) reference check - IDs MAY be repeated!
 					break;
 				}
 				
-				//else if either the value remains 0 OR the value was 1 but it was not the process to be freed..
+				//else if either the value remains 0 OR it was not the process to be freed..
 				//then stay in busy wait!
 			}
 			value = 0; //take the resource, the process is now ready with it until it's called to execute.
@@ -77,10 +77,13 @@ public class BinarySemaphore {
 		if(!(freeProcess==null)) {
 			Process.setProcessState(freeProcess, ProcessState.Ready);
 			OperatingSystem.getReadyQueue().addLast(freeProcess);
-			setFree(freeProcess);
+			setFree(freeProcess); //do not set semaphore to 1 - just free a blocked process (it took the rsc already)
 		}
 		
-		value = 1;
+		else {
+			//else if nothing to be free, make it 1 for anyone to take.
+			value = 1;
+		}
 		
 	}
 
