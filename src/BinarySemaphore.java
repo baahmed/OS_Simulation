@@ -44,9 +44,6 @@ public class BinarySemaphore {
 				//if someone released the resource, and the process is the one to be freed, 
 				//then exit the busy wait.
 				if(value ==1 && p == freeThisProcess) { //TODO: (need to confirm) reference check - IDs MAY be repeated!
-					//make it ready and add to ready queue
-					p.setProcessState(p, ProcessState.Ready);
-					OperatingSystem.getReadyQueue().addLast(p);
 					break;
 				}
 				
@@ -76,6 +73,9 @@ public class BinarySemaphore {
 		default: System.out.println("unsupported kernel command"); return; 
 		}
 		
+		//make it ready and add to ready queue
+		Process.setProcessState(freeProcess, ProcessState.Ready);
+		OperatingSystem.getReadyQueue().addLast(freeProcess);
 		
 		setFree(freeProcess);
 		

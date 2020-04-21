@@ -13,7 +13,7 @@ public class OperatingSystem {
 	
 	//removed static reference 
 	
-	public static ArrayList<Thread> ProcessTable;
+	public static ArrayList<Thread> ProcessTable = new ArrayList<Thread>();
 	
 	//queues used for the scheduling algorithm
 	/*
@@ -26,11 +26,11 @@ public class OperatingSystem {
 	 * TODO: dont forget to initialize stuff 
 	 */
 	
-	public static LinkedList<Process> readyQueue;
-	public static LinkedList<Process> blockedReadQueue;
-	public static LinkedList<Process> blockedWriteQueue;
-	public static LinkedList<Process> blockedPrintQueue;
-	public static LinkedList<Process> blockedInputQueue;
+	public static LinkedList<Process> readyQueue = new LinkedList<Process>();
+	public static LinkedList<Process> blockedReadQueue = new LinkedList<Process>();
+	public static LinkedList<Process> blockedWriteQueue = new LinkedList<Process>();
+	public static LinkedList<Process> blockedPrintQueue = new LinkedList<Process>();
+	public static LinkedList<Process> blockedInputQueue = new LinkedList<Process>();
 	
 	//getters for each queue reference
 	//semaphores are only responsible for adding stuff in the blocked queue and once unblocked, to the ready queue
