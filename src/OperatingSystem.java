@@ -21,7 +21,8 @@ public class OperatingSystem {
 	 * LinkedList.addLast - adds to the end of the linked list, check out its use:
 	 * https://www.geeksforgeeks.org/linkedlist-addlast-method-in-java/
 	 * 
-	 * TODO: dont forget to initialize stuff 
+	 * TODO: dont forget to initialize stuff and dont forget to handle the empty list case
+	 * 
 	 */
 	
 	public static LinkedList<Process> readyQueue = new LinkedList<Process>();

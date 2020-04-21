@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 //import java.util.concurrent.Semaphore;
 
 
@@ -97,4 +99,9 @@ public class Process extends Thread {
 		 return processID;
 	 }
 	 
+	 
+	 public static void main(String[] args) {
+		 LinkedList<Integer> x = new LinkedList();
+		 System.out.println(x.isEmpty());
+	 }
 }

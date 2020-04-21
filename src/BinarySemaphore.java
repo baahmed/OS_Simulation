@@ -62,22 +62,23 @@ public class BinarySemaphore {
 	
 	public void semPost(int id, String rsc) {
 		
-		Process freeProcess = new Process(1); //initalize b ay batee5 i dont care
+		Process freeProcess = null;
 		
 		//which process is being freed? we need to know which queue to take a process from
 		switch(rsc) {
-		case "read": freeProcess = (Process) OperatingSystem.getBlockedReadQueue().removeFirst(); break;
-		case "write": freeProcess = (Process) OperatingSystem.getBlockedWriteQueue().removeFirst(); break;
-		case "print": freeProcess = (Process) OperatingSystem.getBlockedPrintQueue().removeFirst(); break;
-		case "input": freeProcess = (Process) OperatingSystem.getBlockedInputQueue().removeFirst(); break;
+		case "read": freeProcess = (!(OperatingSystem.getBlockedReadQueue()).isEmpty())? (Process) OperatingSystem.getBlockedReadQueue().removeFirst(): null ; break;
+		case "write": freeProcess = (!(OperatingSystem.getBlockedWriteQueue()).isEmpty())?  (Process) OperatingSystem.getBlockedWriteQueue().removeFirst():null; break;
+		case "print": freeProcess = (!(OperatingSystem.getBlockedPrintQueue()).isEmpty())? (Process) OperatingSystem.getBlockedPrintQueue().removeFirst() :null; break;
+		case "input": freeProcess = (!(OperatingSystem.getBlockedInputQueue().isEmpty()))? (Process) OperatingSystem.getBlockedInputQueue().removeFirst():null; break;
 		default: System.out.println("unsupported kernel command"); return; 
 		}
 		
 		//make it ready and add to ready queue
-		Process.setProcessState(freeProcess, ProcessState.Ready);
-		OperatingSystem.getReadyQueue().addLast(freeProcess);
-		
-		setFree(freeProcess);
+		if(!(freeProcess==null)) {
+			Process.setProcessState(freeProcess, ProcessState.Ready);
+			OperatingSystem.getReadyQueue().addLast(freeProcess);
+			setFree(freeProcess);
+		}
 		
 		value = 1;
 		
