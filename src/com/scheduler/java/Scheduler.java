@@ -2,6 +2,7 @@ package com.scheduler.java;
 
 import com.operatingsystem.java.OperatingSystem;
 import com.process.java.Process;
+import com.process.java.ProcessState;
 
 public class Scheduler {
 
@@ -17,7 +18,7 @@ public class Scheduler {
                 && !OperatingSystem.getReadyQueue().isEmpty()) {
             currentProcess = OperatingSystem.getReadyQueue().remove();
             if (currentProcess.isAlive()) {
-                currentProcess.notify();
+                currentProcess.resume();
                 return;
             }
             currentProcess.start();
@@ -25,6 +26,7 @@ public class Scheduler {
     }
 
     public static void scheduling(Process process) {
+        process.setState(ProcessState.READY);
         OperatingSystem.getReadyQueue().add(process);
         run();
     }

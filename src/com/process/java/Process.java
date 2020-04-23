@@ -1,7 +1,6 @@
 package com.process.java;
 
 import com.operatingsystem.java.OperatingSystem;
-import com.scheduler.java.Scheduler;
 
 public class Process extends Thread {
 
@@ -17,19 +16,12 @@ public class Process extends Thread {
     public void setState(ProcessState s) {
         state = s;
         if (s == ProcessState.TERMINATED) {
-            OperatingSystem.ProcessTable.remove(OperatingSystem.ProcessTable.indexOf(this));
-            OperatingSystem.getReadyQueue().remove(this);
-            OperatingSystem.getTerminatedQueue().add(this);
-            Scheduler.run();
+            OperatingSystem.terminateWithScheduling(this);
         }
     }
 
     public ProcessState getProcessState() {
         return state;
-    }
-
-    public int getProcessID() {
-        return processID;
     }
 
     @Override

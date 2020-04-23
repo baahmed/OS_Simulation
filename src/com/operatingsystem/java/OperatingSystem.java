@@ -125,12 +125,19 @@ public class OperatingSystem {
     private static void createProcess(int processID) {
         Process process = new Process(processID);
         ProcessTable.add(process);
-        process.setState(ProcessState.READY);
         Scheduler.scheduling(process);
+    }
+
+    public static void terminateWithScheduling(Process process) {
+        OperatingSystem.ProcessTable.remove(OperatingSystem.ProcessTable.indexOf(process));
+        OperatingSystem.getReadyQueue().remove(process);
+        OperatingSystem.getTerminatedQueue().add(process);
+        Scheduler.run();
     }
 
     public static void main(String[] args) {
         ProcessTable = new ArrayList<>();
+
         createProcess(1);
         createProcess(2);
         createProcess(3);
