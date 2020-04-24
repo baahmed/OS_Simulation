@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class OperatingSystem {
 	
@@ -23,11 +24,11 @@ public class OperatingSystem {
 	     *
 	     */
 
-	    public static LinkedList<Process> readyQueue = new LinkedList<>();
-	    public static LinkedList<Process> blockedReadQueue = new LinkedList<>();
-	    public static LinkedList<Process> blockedWriteQueue = new LinkedList<>();
-	    public static LinkedList<Process> blockedPrintQueue = new LinkedList<>();
-	    public static LinkedList<Process> blockedInputQueue = new LinkedList<>();
+	    public static ConcurrentLinkedQueue<Process> readyQueue = new ConcurrentLinkedQueue<>();
+	    public static ConcurrentLinkedQueue<Process> blockedReadQueue = new ConcurrentLinkedQueue<>();
+	    public static ConcurrentLinkedQueue<Process> blockedWriteQueue = new ConcurrentLinkedQueue<>();
+	    public static ConcurrentLinkedQueue<Process> blockedPrintQueue = new ConcurrentLinkedQueue<>();
+	    public static ConcurrentLinkedQueue<Process> blockedInputQueue = new ConcurrentLinkedQueue<>();
 
 	    /*used semaphores*/
 
@@ -39,24 +40,24 @@ public class OperatingSystem {
 	    //getters for each queue reference
 	    //semaphores are only responsible for adding stuff in the blocked queue and once unblocked, to the ready queue
 
-	    public static LinkedList<Process> getBlockedReadQueue() {
+	    public static ConcurrentLinkedQueue<Process> getBlockedReadQueue() {
 	        return blockedReadQueue;
 	    }
 
 
-	    public static LinkedList<Process> getBlockedWriteQueue() {
+	    public static ConcurrentLinkedQueue<Process> getBlockedWriteQueue() {
 	        return blockedWriteQueue;
 	    }
 
-	    public static LinkedList<Process> getBlockedPrintQueue() {
+	    public static ConcurrentLinkedQueue<Process> getBlockedPrintQueue() {
 	        return blockedPrintQueue;
 	    }
 
-	    public static LinkedList<Process> getBlockedInputQueue() {
+	    public static ConcurrentLinkedQueue<Process> getBlockedInputQueue() {
 	        return blockedInputQueue;
 	    }
 
-	    public static LinkedList<Process> getReadyQueue() {
+	    public static ConcurrentLinkedQueue<Process> getReadyQueue() {
 	        return readyQueue;
 	    }
 
@@ -152,21 +153,21 @@ public class OperatingSystem {
 			
 			//semaphore test cases
 			//please make sure to uncomment termination when testing :-))
-//			Process p1 = new Process(1);
-//			Process p2 = new Process(2);
-//			Process p3 = new Process(1);
-//			Process p4 = new Process(3);
-//			Process p5 = new Process(4);
-//			Process p6 = new Process(5);
-//			Process p7 = new Process(4);
-//			
-//			p2.start();
-//			p1.start();
-//			p3.start();
-//			p4.start();
-//			p5.start();
-//			p6.start();
-//			p7.start();
+			Process p1 = new Process(1);
+			Process p2 = new Process(2);
+			Process p3 = new Process(1);
+			Process p4 = new Process(3);
+			Process p5 = new Process(4);
+			Process p6 = new Process(5);
+			Process p7 = new Process(4);
+			
+			p2.start();
+			p1.start();
+			p3.start();
+			p4.start();
+			p5.start();
+			p6.start();
+			p7.start();
 			
 
 		}
