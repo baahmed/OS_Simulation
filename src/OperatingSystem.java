@@ -241,7 +241,7 @@ public class OperatingSystem {
 		//followed by printing numbers 0 to 300 twice
 		//followed by printing the content of a file 3 times
 		//followed by printing 500 to 1000 twice
-		//followed  by asking the lower bound and upper bound twice
+		//followed by asking the lower bound and upper bound twice
 		createProcess(1);
 		createProcess(1);
 		createProcess(2);

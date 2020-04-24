@@ -13,6 +13,7 @@ public class Process extends Thread{
 
     @Override
     public void run() {
+    	setProcessState(this, ProcessState.Running);
         switch (processID) {
             case 1:
                 process1();
