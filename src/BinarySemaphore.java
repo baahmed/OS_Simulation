@@ -26,7 +26,7 @@ public class BinarySemaphore {
         if (value == 0) {
             //make it blocked
         	//TODO: remove
-        	//System.out.println("Process " + p.getProcessID() + " is now blocked");
+        	System.out.println("FOR TRACING: Process " + p.getProcessID() + " is now blocked");
             Process.setProcessState(p, ProcessState.Waiting);
             //add to blocked queue
             switch (rsc) {
@@ -52,7 +52,7 @@ public class BinarySemaphore {
                 //if someone released the resource, and the process is the one to be freed,
                 //then exit the busy wait.
                 if (p == freeThisProcess) { //TODO: (need to confirm) reference check - IDs MAY be repeated!
-                	//System.out.println("to exit busy wait");
+                	System.out.println("FOR TRACING: now exit busy wait");
                     break;
                 }
 
