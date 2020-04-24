@@ -6,10 +6,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.concurrent.Semaphore;
-
 
 public class OperatingSystem {
+	
+	
+	//TODO: scheduling prototypes
+	private static boolean CPUfree = true;
+	
 	
 	public static ArrayList<Thread> ProcessTable = new ArrayList<Thread>();
 	
@@ -79,8 +82,6 @@ public class OperatingSystem {
 		return input;
 	}
 	
-
-	
 //basant didnt write the rest of the comments
 //	public static int activeProcess= 0;
 	//system calls:
@@ -139,7 +140,55 @@ public class OperatingSystem {
 		Process p = new Process(processID);
 		ProcessTable.add(p);
 		Process.setProcessState(p,ProcessState.Ready);
+		//TODO
+		//p.start();
+		readyQueue.addLast(p);
+		
+	}
+	
+	
+
+//---------------------------------------------------------------SCHEDULER--------------------------------------------------------------------------------
+	
+	//TODO: static or instance?
+	
+	private static void schedule()
+	{
+		if(!CPUfree || readyQueue.isEmpty())
+			return;
+		
+		CPUfree = false;
+		
+		Process p = readyQueue.removeFirst();
+		//Future f = scheduler.submit(p);
+		Process.setProcessState(p, ProcessState.Running);
 		p.start();
+		
+		try {
+			p.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		//if the process gets terminated or blocked
+		//choose a new process from the RQ
+		//TODO: polish this after consulting
+		//TODO: make semPost invoke the scheduler (is it really not needed in FCFS? :(
+		//TODO: remove the start() and from createProcess()
+		//TODO: add the process to the RQ in the createProcess()
+		if(Process.getProcessState(p)==ProcessState.Terminated ||
+		   Process.getProcessState(p)==ProcessState.Waiting)
+		{
+			CPUfree = true;
+			
+			if(readyQueue.isEmpty())
+				return;
+			
+			schedule();
+			
+		}
 		
 	}
 	
@@ -147,11 +196,15 @@ public class OperatingSystem {
    		ProcessTable = new ArrayList<Thread>();
 
 		createProcess(1);
+		schedule();
 		createProcess(2);
+		schedule();
 		createProcess(3);
+		schedule();
 		createProcess(4);
+		schedule();
 		createProcess(5);
-
+		schedule();
 	}
 }
 

@@ -29,10 +29,16 @@ public class Process extends Thread {
 	
 	private void process1() {
 		
+		//TODO
+		//System.out.println("Line 33 in Process " + getProcessState(this));
+		
 		OperatingSystem.printText("Enter File Name: ");
+		//System.out.println("Line 36 in Process " + getProcessState(this));
 		OperatingSystem.printText(OperatingSystem.readFile(OperatingSystem.TakeInput()));
+		//System.out.println("Line 38 in Process " + getProcessState(this));
 		
 		setProcessState(this,ProcessState.Terminated);
+		//System.out.println("Line 41 in Process " + getProcessState(this));
 		}
 	
 	private void process2() {
