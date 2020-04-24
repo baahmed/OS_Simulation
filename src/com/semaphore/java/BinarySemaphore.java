@@ -53,11 +53,7 @@ public class BinarySemaphore {
                 System.out.println("unsupported kernel command");
                 break;
         }
-        try {
-            process.wait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        process.suspend();
     }
 
     public void semPost() {
@@ -81,9 +77,7 @@ public class BinarySemaphore {
         }
         if (!queue.isEmpty()) {
             Process finishedProcess = queue.remove();
-            finishedProcess.setState(ProcessState.READY);
             Scheduler.scheduling(finishedProcess);
-            Scheduler.run();
             return;
         }
         setState(SemaphoreState.ACCESSIBLE);
