@@ -40,7 +40,7 @@ public class Process extends Thread{
         OperatingSystem.getInputSemaphore().semPost(this.processID, "input");
 
         //TODO: REMOVE COMMENTS!
-      //  setProcessState(this, ProcessState.Terminated);
+        setProcessState(this, ProcessState.Terminated);
     }
 
     private void process2() {
@@ -55,7 +55,7 @@ public class Process extends Thread{
         OperatingSystem.getWriteSemaphore().semWait(this, "write");
         OperatingSystem.writefile(filename, data);
         OperatingSystem.getWriteSemaphore().semPost(getProcessID(), "write");
-      //  setProcessState(this, ProcessState.Terminated);
+        setProcessState(this, ProcessState.Terminated);
     }
 
     private void process3() {
@@ -66,7 +66,7 @@ public class Process extends Thread{
             x++;
         }
         OperatingSystem.getPrintSemaphore().semPost(getProcessID(), "print");
-       // setProcessState(this, ProcessState.Terminated);
+       setProcessState(this, ProcessState.Terminated);
     }
 
     private void process4() {
@@ -77,7 +77,7 @@ public class Process extends Thread{
             x++;
         }
         OperatingSystem.getPrintSemaphore().semPost(getProcessID(), "print");
-      //  setProcessState(this, ProcessState.Terminated);
+        setProcessState(this, ProcessState.Terminated);
     }
 
     private void process5() {
@@ -99,7 +99,7 @@ public class Process extends Thread{
         OperatingSystem.getWriteSemaphore().semWait(this, "write");
         OperatingSystem.writefile("P5.txt", data);
         OperatingSystem.getWriteSemaphore().semPost(getProcessID(), "write");
-        //setProcessState(this, ProcessState.Terminated);
+        setProcessState(this, ProcessState.Terminated);
     }
 
     public static void setProcessState(Process p, ProcessState s) {

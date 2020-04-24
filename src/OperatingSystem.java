@@ -142,7 +142,7 @@ public class OperatingSystem {
 		}
 		
 		public static void main(String[] args) {
-//	   		ProcessTable = new ArrayList<Thread>();
+	   		ProcessTable = new ArrayList<Thread>();
 //
 //			createProcess(1);
 //			createProcess(2);
@@ -153,21 +153,28 @@ public class OperatingSystem {
 			
 			//semaphore test cases
 			//please make sure to uncomment termination when testing :-))
-			Process p1 = new Process(1);
-			Process p2 = new Process(2);
-			Process p3 = new Process(1);
-			Process p4 = new Process(3);
-			Process p5 = new Process(4);
-			Process p6 = new Process(5);
-			Process p7 = new Process(4);
-			
-			p2.start();
-			p1.start();
-			p3.start();
-			p4.start();
-			p5.start();
-			p6.start();
-			p7.start();
+//			Process p1 = new Process(1);////
+//			Process p2 = new Process(2);////
+//			Process p3 = new Process(1);////
+//			Process p4 = new Process(3);////
+//			Process p5 = new Process(4);////
+//			Process p6 = new Process(5);////
+//			Process p7 = new Process(4);////
+//			Process p8 = new Process(1);////
+//			Process p9 = new Process(2);////
+//			Process p10 = new Process(1);////
+//			
+//			
+//			p9.start();
+//			p1.start();
+//			p3.start();
+//			p10.start();
+//			p4.start();
+//			p5.start();
+//			p6.start();
+//			p7.start();
+//			p2.start();
+//			p8.start();
 			
 
 		}

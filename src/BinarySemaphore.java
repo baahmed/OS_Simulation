@@ -64,7 +64,7 @@ public class BinarySemaphore {
             
             
             //TODO: MUST BE SUSPEND
-            p.resume(); //TODO: we resume it ONLY when we execute!!
+            p.suspend(); //TODO: we resume it ONLY when we execute!!
         }
         //if resource was available
         else {
