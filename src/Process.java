@@ -108,7 +108,7 @@ public class Process extends Thread{
             OperatingSystem.ProcessTable.remove(OperatingSystem.ProcessTable.indexOf(p));
           
             //TODO: comment out when testing sempahores only
-            OperatingSystem.schedule();
+            //OperatingSystem.schedule();
         }
     }
 

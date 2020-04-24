@@ -139,14 +139,14 @@ public class OperatingSystem {
 		Process p = new Process(processID);
 		ProcessTable.add(p);
 		Process.setProcessState(p, ProcessState.Ready);
+		readyQueue.add(p);
 		
 		//TODO: uncomment this when testing semaphores only
 		//start should be inside scheduler
-		//p.start();
+		p.start();
 		
 		//TODO: comment this when testing semaphores only
-		readyQueue.add(p);
-		schedule();
+		//schedule();
 
 	}
 
@@ -160,6 +160,8 @@ public class OperatingSystem {
 	//creating a process
 	//posting a semaphore
 	//once a process is terminated
+	
+	/*
 	public static void schedule() 
 	{
 //		System.out.println("entering scheduler");
@@ -198,9 +200,27 @@ public class OperatingSystem {
 		else
 			execProc.start();
 
-	}
+	}*/
 
 	public static void main(String[] args) {
+		
+		/* To test Sempahores only
+		 * 
+		 * In the OperatingSystem class:
+		 * * in createProcess method:
+		 * * * uncomment p.start()
+		 * * * comment out schedule()
+		 * * comment out the schedule() method
+		 * 
+		 * In the Process class:
+		 * * in the setProcessState method:
+		 * * * comment out OperatingSystem.schedule()
+		 * 
+		 * In the BinarySemaphore class:
+		 * * in the semWait method 
+		 * * * comment out OperatingSystem.schedule()
+		 */
+		
 		ProcessTable = new ArrayList<Thread>();
 //
 //			createProcess(1);
