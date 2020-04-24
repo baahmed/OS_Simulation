@@ -94,8 +94,8 @@ public class BinarySemaphore {
             Process.setProcessState(freeProcess, ProcessState.Ready);
             OperatingSystem.getReadyQueue().addLast(freeProcess);
             setFree(freeProcess); //do not set semaphore to 1 - just free a blocked process (it took the rsc already)
-            //TODO: remove both lines
-           // System.out.println("process " + freeProcess.getProcessID() + " is now ready");
+            //TODO: comment next line
+            //System.out.println("process " + freeProcess.getProcessID() + " is now ready");
             
         } else {
             //else if nothing to be free, make it 1 for anyone to take.

@@ -149,13 +149,25 @@ public class OperatingSystem {
 //			createProcess(4);
 //			createProcess(5);
 			
-			Process p1 = new Process(1);
-			Process p2 = new Process(2);
-			Process p3 = new Process(1);
 			
-			p2.start();
-			p1.start();
-			p3.start();
+			//semaphore test cases
+			//please make sure to uncomment termination when testing :-))
+//			Process p1 = new Process(1);
+//			Process p2 = new Process(2);
+//			Process p3 = new Process(1);
+//			Process p4 = new Process(3);
+//			Process p5 = new Process(4);
+//			Process p6 = new Process(5);
+//			Process p7 = new Process(4);
+//			
+//			p2.start();
+//			p1.start();
+//			p3.start();
+//			p4.start();
+//			p5.start();
+//			p6.start();
+//			p7.start();
+			
 
 		}
 	 
