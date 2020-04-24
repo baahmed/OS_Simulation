@@ -7,7 +7,7 @@ public class BinarySemaphore {
 
     private volatile int value; // the value of the mutex instance - free (1) or not free(0)?
     public volatile Process freeThisProcess = null; //this is the process that will be freed - according to the scheduler
-    //TODO: how to initialize it?
+  
 
 
     public BinarySemaphore() {
@@ -25,9 +25,12 @@ public class BinarySemaphore {
         //if resource was not available
         if (value == 0) {
             //make it blocked
-        	//TODO: remove
+        	//TODO: this was left for tracing purposes
         	System.out.println("FOR TRACING: Process " + p.getProcessID() + " is now blocked");
             Process.setProcessState(p, ProcessState.Waiting);
+        	//TODO: this was left for tracing purposes
+        	System.out.println("should be waiting" + p.getProcessID() + " " +  Process.getProcessState(p));
+
             //add to blocked queue
             switch (rsc) {
                 case "read":
@@ -51,8 +54,11 @@ public class BinarySemaphore {
             while (value == 0) {
                 //if someone released the resource, and the process is the one to be freed,
                 //then exit the busy wait.
-                if (p == freeThisProcess) { //TODO: (need to confirm) reference check - IDs MAY be repeated!
+                if (p == freeThisProcess) { //IDs MAY be repeated!
+                	//TODO: this was left for tracing purposes
                 	System.out.println("FOR TRACING: now exit busy wait");
+                	System.out.println("should be ready" + p.getProcessID() + " " +  Process.getProcessState(p));
+
                     break;
                 }
 
@@ -63,8 +69,8 @@ public class BinarySemaphore {
             value = 0; //take the resource, the process is now ready with it until it's called to execute.
             
             
-            //TODO: MUST BE SUSPEND
-            p.suspend(); //TODO: we resume it ONLY when we execute!!
+            //TODO: comment this if testing for semaphore
+            p.suspend(); //suspend and the scheduler resumes when it is chosen to cont.
             
             //TODO: comment this when testing semaphores only
             OperatingSystem.schedule();
@@ -100,7 +106,7 @@ public class BinarySemaphore {
             Process.setProcessState(freeProcess, ProcessState.Ready);
             OperatingSystem.getReadyQueue().add(freeProcess);
             setFree(freeProcess); //do not set semaphore to 1 - just free a blocked process (it took the rsc already)
-            //TODO: comment next line
+     
             //System.out.println("process " + freeProcess.getProcessID() + " is now ready");
             
         } else {

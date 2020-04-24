@@ -36,10 +36,12 @@ public class Process extends Thread{
     private void process1() {
         OperatingSystem.getPrintSemaphore().semWait(this, "print");
         OperatingSystem.getInputSemaphore().semWait(this, "input");
+        OperatingSystem.getReadSemaphore().semWait(this,"read");
         OperatingSystem.printText("Enter File Name: ");
         OperatingSystem.printText(OperatingSystem.readFile(OperatingSystem.TakeInput()));
         OperatingSystem.getPrintSemaphore().semPost(this.processID, "print");
         OperatingSystem.getInputSemaphore().semPost(this.processID, "input");
+        OperatingSystem.getReadSemaphore().semPost(this.processID, "read");
         setProcessState(this, ProcessState.Terminated);
     }
 

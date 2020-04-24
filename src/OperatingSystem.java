@@ -242,18 +242,27 @@ public class OperatingSystem {
 		//followed by printing the content of a file 3 times
 		//followed by printing 500 to 1000 twice
 		//followed by asking the lower bound and upper bound twice
+//		createProcess(1);
+//		createProcess(1);
+//		createProcess(2);
+//		createProcess(3);
+//		createProcess(3);
+//		createProcess(1);
+//		createProcess(1);
+//		createProcess(1);
+//		createProcess(4);
+//		createProcess(4);
+//		createProcess(5);
+//		createProcess(5);
+		
+		
 		createProcess(1);
 		createProcess(1);
 		createProcess(2);
 		createProcess(3);
-		createProcess(3);
-		createProcess(1);
-		createProcess(1);
-		createProcess(1);
-		createProcess(4);
-		createProcess(4);
 		createProcess(5);
-		createProcess(5);
+		createProcess(4);
+		
 		
 	}
 
