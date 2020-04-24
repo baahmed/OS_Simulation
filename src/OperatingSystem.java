@@ -143,10 +143,10 @@ public class OperatingSystem {
 		
 		//TODO: uncomment this when testing semaphores only
 		//start should be inside scheduler
-		p.start();
+		//p.start();
 		
 		//TODO: comment this when testing semaphores only
-		//schedule();
+		schedule();
 
 	}
 
@@ -161,11 +161,11 @@ public class OperatingSystem {
 	//posting a semaphore
 	//once a process is terminated
 	
-	/*
+	
 	public static void schedule() 
 	{
 //		System.out.println("entering scheduler");
-//		System.out.println(readyQueue.size());
+//		System.out.println("ready queue size: " + readyQueue.size());
 		
 		// if there is currently a process being executed
 		// check if it was terminated or blocked
@@ -199,8 +199,10 @@ public class OperatingSystem {
 			execProc.resume();
 		else
 			execProc.start();
+		
+//		System.out.println("executing a process");
 
-	}*/
+	}
 
 	public static void main(String[] args) {
 		
@@ -219,6 +221,7 @@ public class OperatingSystem {
 		 * In the BinarySemaphore class:
 		 * * in the semWait method 
 		 * * * comment out OperatingSystem.schedule()
+		 * * * comment out p.suspend()
 		 */
 		
 		ProcessTable = new ArrayList<Thread>();
@@ -262,26 +265,26 @@ public class OperatingSystem {
 		//followed by printing the content of a file 3 times
 		//followed by printing 500 to 1000 twice
 		//followed by asking the lower bound and upper bound twice
-//		createProcess(1);
-//		createProcess(1);
-//		createProcess(2);
-//		createProcess(3);
-//		createProcess(3);
-//		createProcess(1);
-//		createProcess(1);
-//		createProcess(1);
-//		createProcess(4);
-//		createProcess(4);
-//		createProcess(5);
-//		createProcess(5);
-		
-		
 		createProcess(1);
 		createProcess(1);
 		createProcess(2);
 		createProcess(3);
-		createProcess(5);
+		createProcess(3);
+		createProcess(1);
+		createProcess(1);
+		createProcess(1);
 		createProcess(4);
+		createProcess(4);
+		createProcess(5);
+		createProcess(5);
+		
+		
+//		createProcess(1);
+//		createProcess(1);
+//		createProcess(2);
+//		createProcess(3);
+//		createProcess(5);
+//		createProcess(4);
 		
 		
 	}
