@@ -33,18 +33,13 @@ public class Process extends Thread{
     }
 
     private void process1() {
-    	//TODO
-    	System.out.println("entered p1");
         OperatingSystem.getPrintSemaphore().semWait(this, "print");
         OperatingSystem.getInputSemaphore().semWait(this, "input");
         OperatingSystem.printText("Enter File Name: ");
         OperatingSystem.printText(OperatingSystem.readFile(OperatingSystem.TakeInput()));
         OperatingSystem.getPrintSemaphore().semPost(this.processID, "print");
         OperatingSystem.getInputSemaphore().semPost(this.processID, "input");
-
-        //TODO: REMOVE COMMENTS!
         setProcessState(this, ProcessState.Terminated);
-        System.out.println("finished p1");
     }
 
     private void process2() {
@@ -110,8 +105,10 @@ public class Process extends Thread{
         p.status = s;
         if (s == ProcessState.Terminated) {
             OperatingSystem.ProcessTable.remove(OperatingSystem.ProcessTable.indexOf(p));
+          
+            //TODO: comment out when testing sempahores only
+            OperatingSystem.schedule();
         }
-        OperatingSystem.schedule();
     }
 
     public static ProcessState getProcessState(Process p) {

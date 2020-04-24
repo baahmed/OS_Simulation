@@ -4,24 +4,14 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class OperatingSystem {
-	// TODO: scheduling prototypes
-	private static boolean CPUfree = true;
-//	private static ExecutorService sch = Executors.newCachedThreadPool();
-//	private static LinkedList<Future<?>> futures = new LinkedList<>();
-//	private static int curr = -1;
-	//TODO
-	public static Process execProc;
-//	private static Scheduler sch = new Scheduler();
+	
+	//process currently executed by processor
+	private static Process execProc;
 
-	
-	
 	public static ArrayList<Thread> ProcessTable = new ArrayList<Thread>();
 
 	// queues used for the scheduling algorithm
@@ -37,11 +27,11 @@ public class OperatingSystem {
 	 *
 	 */
 
-	public static LinkedList<Process> readyQueue = new LinkedList<>();
-	public static LinkedList<Process> blockedReadQueue = new LinkedList<>();
-	public static LinkedList<Process> blockedWriteQueue = new LinkedList<>();
-	public static LinkedList<Process> blockedPrintQueue = new LinkedList<>();
-	public static LinkedList<Process> blockedInputQueue = new LinkedList<>();
+	public static ConcurrentLinkedQueue<Process> readyQueue = new ConcurrentLinkedQueue<>();
+	public static ConcurrentLinkedQueue<Process> blockedReadQueue = new ConcurrentLinkedQueue<>();
+	public static ConcurrentLinkedQueue<Process> blockedWriteQueue = new ConcurrentLinkedQueue<>();
+	public static ConcurrentLinkedQueue<Process> blockedPrintQueue = new ConcurrentLinkedQueue<>();
+	public static ConcurrentLinkedQueue<Process> blockedInputQueue = new ConcurrentLinkedQueue<>();
 
 	/* used semaphores */
 
@@ -54,23 +44,23 @@ public class OperatingSystem {
 	// semaphores are only responsible for adding stuff in the blocked queue and
 	// once unblocked, to the ready queue
 
-	public static LinkedList<Process> getBlockedReadQueue() {
+	public static ConcurrentLinkedQueue<Process> getBlockedReadQueue() {
 		return blockedReadQueue;
 	}
 
-	public static LinkedList<Process> getBlockedWriteQueue() {
+	public static ConcurrentLinkedQueue<Process> getBlockedWriteQueue() {
 		return blockedWriteQueue;
 	}
 
-	public static LinkedList<Process> getBlockedPrintQueue() {
+	public static ConcurrentLinkedQueue<Process> getBlockedPrintQueue() {
 		return blockedPrintQueue;
 	}
 
-	public static LinkedList<Process> getBlockedInputQueue() {
+	public static ConcurrentLinkedQueue<Process> getBlockedInputQueue() {
 		return blockedInputQueue;
 	}
 
-	public static LinkedList<Process> getReadyQueue() {
+	public static ConcurrentLinkedQueue<Process> getReadyQueue() {
 		return readyQueue;
 	}
 
@@ -143,76 +133,75 @@ public class OperatingSystem {
 	}
 
 	private static void createProcess(int processID) {
+		
+//		System.out.println("creating process " + processID);
+		
 		Process p = new Process(processID);
 		ProcessTable.add(p);
 		Process.setProcessState(p, ProcessState.Ready);
-		readyQueue.addLast(p);
+		
+		//TODO: uncomment this when testing semaphores only
+		//start should be inside scheduler
+		//p.start();
+		
+		//TODO: comment this when testing semaphores only
+		readyQueue.add(p);
 		schedule();
 
 	}
 
-//---------------------------------------------------------------SCHEDULER--------------------------------------------------------------------------------
-
-
-	public static void schedule() {
+	
+//-------------------------------------------SCHEDULER---------------------------------------------------------------------
 		
+	//assigns a process from the readyQueue to execute
+	//using the FCFS algorithm implemented by using a queue
+	
+	//this method is called when:
+	//creating a process
+	//posting a semaphore
+	//once a process is terminated
+	public static void schedule() 
+	{
+//		System.out.println("entering scheduler");
+//		System.out.println(readyQueue.size());
 		
-		//if there is currently a process being executed
-		//check if it was terminated or blocked
-		//and "free" the processor
-		if(execProc != null)
-		{
-			if(Process.getProcessState(execProc)==ProcessState.Terminated ||
-			   Process.getProcessState(execProc)==ProcessState.Waiting )
-				execProc = null;
+		// if there is currently a process being executed
+		// check if it was terminated or blocked
+		// and "free" the processor
+		if (execProc != null) {
 			
+//			System.out.println("current process state: " + Process.getProcessState(execProc));
+			
+			if (Process.getProcessState(execProc) == ProcessState.Terminated
+					|| Process.getProcessState(execProc) == ProcessState.Waiting)
+				execProc = null;
+
 		}
-		
-//		System.out.println("entering scheduling");
-//		System.out.println(CPUfree);
-//		System.out.println(readyQueue);
-		
-		//if there is currently a process in execution
-		//or the ready queue is empty
-		//then the scheduler cannot schedule any processor currently
+
+
+		// if there is currently a process in execution
+		// or the ready queue is empty
+		// then the scheduler cannot schedule any processor currently
 		if (execProc != null || readyQueue.isEmpty())
 			return;
 
-		//remove the process that was added first
-		execProc = readyQueue.removeFirst();
-		
-		//set the process state to running
+		// remove the process that was added first
+		execProc = readyQueue.poll();
+
+		// set the process state to running
 		Process.setProcessState(execProc, ProcessState.Running);
-		
-		
-		//if process was suspended due to block, resume
-		//else start running the process
-		if(execProc.isAlive())
+
+		// if process was suspended due to block, resume
+		// else start running the process
+		if (execProc.isAlive())
 			execProc.resume();
 		else
 			execProc.start();
 
-
-		// if the process gets terminated or blocked
-		// choose a new process from the RQ
-		// TODO: polish this after consulting
-		// TODO: make semPost invoke the scheduler (is it really not needed in FCFS?)
-		// TODO: remove the start() and from createProcess()
-		// TODO: add the process to the RQ in the createProcess()
-//		if (Process.getProcessState(execProc) == ProcessState.Terminated
-//				|| Process.getProcessState(execProc) == ProcessState.Waiting) {
-//
-//			if (readyQueue.isEmpty())
-//				return;
-//
-//			schedule();
-//
-//		}
-
 	}
 
 	public static void main(String[] args) {
-//	   		ProcessTable = new ArrayList<Thread>();
+		ProcessTable = new ArrayList<Thread>();
 //
 //			createProcess(1);
 //			createProcess(2);
@@ -222,33 +211,50 @@ public class OperatingSystem {
 
 		// semaphore test cases
 		// please make sure to uncomment termination when testing :-))
-//			Process p1 = new Process(1);
-//			Process p2 = new Process(2);
-//			Process p3 = new Process(1);
-//			Process p4 = new Process(3);
-//			Process p5 = new Process(4);
-//			Process p6 = new Process(5);
-//			Process p7 = new Process(4);
+//			Process p1 = new Process(1);////
+//			Process p2 = new Process(2);////
+//			Process p3 = new Process(1);////
+//			Process p4 = new Process(3);////
+//			Process p5 = new Process(4);////
+//			Process p6 = new Process(5);////
+//			Process p7 = new Process(4);////
+//			Process p8 = new Process(1);////
+//			Process p9 = new Process(2);////
+//			Process p10 = new Process(1);////
 //			
-//			p2.start();
+//			
+//			p9.start();
 //			p1.start();
 //			p3.start();
+//			p10.start();
 //			p4.start();
 //			p5.start();
 //			p6.start();
 //			p7.start();
+//			p2.start();
+//			p8.start();
+
 		
-		
-		createProcess(1);
+		//testing scheduler
+		//should print the content of a file 2 times
+		//followed by entering data to a file once
+		//followed by printing numbers 0 to 300 twice
+		//followed by printing the content of a file 3 times
+		//followed by printing 500 to 1000 twice
+		//followed  by asking the lower bound and upper bound twice
 		createProcess(1);
 		createProcess(1);
 		createProcess(2);
 		createProcess(3);
+		createProcess(3);
+		createProcess(1);
+		createProcess(1);
 		createProcess(1);
 		createProcess(4);
+		createProcess(4);
+		createProcess(5);
 		createProcess(5);
 		
-
 	}
 
 }

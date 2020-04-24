@@ -5,8 +5,8 @@ public class BinarySemaphore {
      * use binary semaphores for conditioned use of the resource. Since both are allowed, I'm using this
      */
 
-    private int value; // the value of the mutex instance - free (1) or not free(0)?
-    public static volatile Process freeThisProcess = null; //this is the process that will be freed - according to the scheduler
+    private volatile int value; // the value of the mutex instance - free (1) or not free(0)?
+    public volatile Process freeThisProcess = null; //this is the process that will be freed - according to the scheduler
     //TODO: how to initialize it?
 
 
@@ -31,16 +31,16 @@ public class BinarySemaphore {
             //add to blocked queue
             switch (rsc) {
                 case "read":
-                    OperatingSystem.getBlockedReadQueue().addLast(p);
+                    OperatingSystem.getBlockedReadQueue().add(p);
                     break;
                 case "write":
-                    OperatingSystem.getBlockedWriteQueue().addLast(p);
+                    OperatingSystem.getBlockedWriteQueue().add(p);
                     break;
                 case "print":
-                    OperatingSystem.getBlockedPrintQueue().addLast(p);
+                    OperatingSystem.getBlockedPrintQueue().add(p);
                     break;
                 case "input":
-                    OperatingSystem.getBlockedInputQueue().addLast(p);
+                    OperatingSystem.getBlockedInputQueue().add(p);
                     break;
                 default:
                     System.out.println("unsupported kernel command");
@@ -61,7 +61,13 @@ public class BinarySemaphore {
                 //then stay in busy wait!
             }
             value = 0; //take the resource, the process is now ready with it until it's called to execute.
+            
+            
+            //TODO: MUST BE SUSPEND
             p.suspend(); //TODO: we resume it ONLY when we execute!!
+            
+            //TODO: comment this when testing semaphores only
+            OperatingSystem.schedule();
         }
         //if resource was available
         else {
@@ -74,16 +80,16 @@ public class BinarySemaphore {
         //which process is being freed? we need to know which queue to take a process from
         switch (rsc) {
             case "read":
-                freeProcess = (!(OperatingSystem.getBlockedReadQueue()).isEmpty()) ? (Process) OperatingSystem.getBlockedReadQueue().removeFirst() : null;
+                freeProcess = (!(OperatingSystem.getBlockedReadQueue()).isEmpty()) ? (Process) OperatingSystem.getBlockedReadQueue().poll() : null;
                 break;
             case "write":
-                freeProcess = (!(OperatingSystem.getBlockedWriteQueue()).isEmpty()) ? (Process) OperatingSystem.getBlockedWriteQueue().removeFirst() : null;
+                freeProcess = (!(OperatingSystem.getBlockedWriteQueue()).isEmpty()) ? (Process) OperatingSystem.getBlockedWriteQueue().poll() : null;
                 break;
             case "print":
-                freeProcess = (!(OperatingSystem.getBlockedPrintQueue()).isEmpty()) ? (Process) OperatingSystem.getBlockedPrintQueue().removeFirst() : null;
+                freeProcess = (!(OperatingSystem.getBlockedPrintQueue()).isEmpty()) ? (Process) OperatingSystem.getBlockedPrintQueue().poll() : null;
                 break;
             case "input":
-                freeProcess = (!(OperatingSystem.getBlockedInputQueue().isEmpty())) ? (Process) OperatingSystem.getBlockedInputQueue().removeFirst() : null;
+                freeProcess = (!(OperatingSystem.getBlockedInputQueue().isEmpty())) ? (Process) OperatingSystem.getBlockedInputQueue().poll() : null;
                 break;
             default:
                 System.out.println("unsupported kernel command");
@@ -92,7 +98,7 @@ public class BinarySemaphore {
         //make it ready and add to ready queue
         if (!(freeProcess == null)) {
             Process.setProcessState(freeProcess, ProcessState.Ready);
-            OperatingSystem.getReadyQueue().addLast(freeProcess);
+            OperatingSystem.getReadyQueue().add(freeProcess);
             setFree(freeProcess); //do not set semaphore to 1 - just free a blocked process (it took the rsc already)
             //TODO: comment next line
             //System.out.println("process " + freeProcess.getProcessID() + " is now ready");
