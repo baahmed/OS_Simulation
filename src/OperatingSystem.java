@@ -14,17 +14,12 @@ public class OperatingSystem {
 
 	public static ArrayList<Thread> ProcessTable = new ArrayList<Thread>();
 
-	// queues used for the scheduling algorithm
 	/*
-	 * pro tip :P LinkedList.removeFirst(); - removes the first item that was added
-	 * to the queue
-	 *
-	 * LinkedList.addLast - adds to the end of the linked list, check out its use:
-	 * https://www.geeksforgeeks.org/linkedlist-addlast-method-in-java/
-	 *
-	 * TODO: dont forget to initialize stuff and dont forget to handle the empty
-	 * list case
-	 *
+	 * queues used by the OS. We have the ready queue, which contains all the
+	 * processes that are ready to be selected to execute. We have four blocked
+	 * queues for each of the four critical resources available to us. 
+	 * 
+	 * I used ConcurrentLinkedQueue because it is a thread safe data structure.
 	 */
 
 	public static ConcurrentLinkedQueue<Process> readyQueue = new ConcurrentLinkedQueue<>();
@@ -33,17 +28,27 @@ public class OperatingSystem {
 	public static ConcurrentLinkedQueue<Process> blockedPrintQueue = new ConcurrentLinkedQueue<>();
 	public static ConcurrentLinkedQueue<Process> blockedInputQueue = new ConcurrentLinkedQueue<>();
 
-	/* used semaphores */
-
+	
+	
+	
+	/* 
+	 * four semaphores to govern the use of the four resources. Each semaphore 
+	 * has its own value (0 taken or 1 available) as well as a pointer to the 
+	 * next process to claim the resource (if any)
+	 * 
+	 *semaphores are only responsible for adding stuff in the blocked queue and
+	 *once unblocked, to the ready queue. The ready queue is the responsibility
+	 *of the scheduler itself.
+	 */
 	public static BinarySemaphore read = new BinarySemaphore();
 	public static BinarySemaphore write = new BinarySemaphore();
 	public static BinarySemaphore print = new BinarySemaphore();
 	public static BinarySemaphore input = new BinarySemaphore();
 
-	// getters for each queue reference
-	// semaphores are only responsible for adding stuff in the blocked queue and
-	// once unblocked, to the ready queue
-
+	
+	
+	
+	/*getters for each queue reference*/
 	public static ConcurrentLinkedQueue<Process> getBlockedReadQueue() {
 		return blockedReadQueue;
 	}
@@ -64,7 +69,10 @@ public class OperatingSystem {
 		return readyQueue;
 	}
 
-	// getters for each semaphore
+	
+	
+	
+	/*getters for each semaphore.*/
 	public static BinarySemaphore getReadSemaphore() {
 		return read;
 	}
@@ -81,7 +89,7 @@ public class OperatingSystem {
 		return input;
 	}
 
-	// basant didnt write the rest of the comments
+
 //		public static int activeProcess= 0;
 	// system calls:
 	// 1- Read from File
@@ -143,10 +151,10 @@ public class OperatingSystem {
 		
 		//TODO: uncomment this when testing semaphores only
 		//start should be inside scheduler
-		//p.start();
+		p.start();
 		
 		//TODO: comment this when testing semaphores only
-		schedule();
+		//schedule();
 
 	}
 
