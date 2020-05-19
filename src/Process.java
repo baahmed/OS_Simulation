@@ -32,34 +32,90 @@ public class Process extends Thread{
                 break;
         }
     }
+    
+    /*
+     * semaphore usage integrated!
+     */
 
     private void process1() {
+    	
+    	/*
+    	 * Since process 1 prints to prompt the user to enter a
+    	 * file name, takes an input (the name), and reads the file -
+    	 * then it semWaits those resources and together to not have
+    	 * some unexpected "cuts" in the execution.
+    	 */
         OperatingSystem.getPrintSemaphore().semWait(this, "print");
         OperatingSystem.getInputSemaphore().semWait(this, "input");
         OperatingSystem.getReadSemaphore().semWait(this,"read");
+        
         OperatingSystem.printText("Enter File Name: ");
         OperatingSystem.printText(OperatingSystem.readFile(OperatingSystem.TakeInput()));
+        
+        
+        /*
+         * once the process is done with the resources, it posts them.
+         */
         OperatingSystem.getPrintSemaphore().semPost(this.processID, "print");
         OperatingSystem.getInputSemaphore().semPost(this.processID, "input");
         OperatingSystem.getReadSemaphore().semPost(this.processID, "read");
+        
+        /*
+         * process complete.
+         */
         setProcessState(this, ProcessState.Terminated);
     }
 
+    
+    
+    
     private void process2() {
+    	/*
+    	 * Since process 2 prints a message to prompt the user 
+    	 * to enter some inputs, and takes those inputs, then writes,
+    	 * then we need to semWait those three resources. We must
+    	 * do print and input together to not have some weird "jumps"
+    	 * when executing the process so that we ensure the prompmt and input
+    	 * are done at the same time as is expected.
+    	 */
         OperatingSystem.getPrintSemaphore().semWait(this, "print");
         OperatingSystem.getInputSemaphore().semWait(this, "input");
+        
         OperatingSystem.printText("Enter File Name: ");
         String filename = OperatingSystem.TakeInput();
         OperatingSystem.printText("Enter Data: ");
         String data = OperatingSystem.TakeInput();
+        
+        
+        
+        /*
+         * we release the print and input semaphores - we are done with the user.
+         */
         OperatingSystem.getPrintSemaphore().semPost(getProcessID(), "print");
         OperatingSystem.getInputSemaphore().semPost(getProcessID(), "input");
+        
+        
+        
+        /*
+         * since doing writing is not gonna be an issue in the incoherent input
+         * prompt for the user, we take the semaphore and release it after writing that
+         * data later. 
+         */
         OperatingSystem.getWriteSemaphore().semWait(this, "write");
         OperatingSystem.writefile(filename, data);
         OperatingSystem.getWriteSemaphore().semPost(getProcessID(), "write");
+        
+        
+        
+        /*
+         * Process complete.
+         */
         setProcessState(this, ProcessState.Terminated);
     }
 
+    
+    
+    
     private void process3() {
         int x = 0;
         OperatingSystem.getPrintSemaphore().semWait(this, "print");
@@ -118,7 +174,6 @@ public class Process extends Thread{
         return p.status;
     }
 
-    //made to be able to check the process ID.
     public int getProcessID() {
         return processID;
     }
