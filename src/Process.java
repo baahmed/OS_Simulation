@@ -75,7 +75,7 @@ public class Process extends Thread{
     	 * to enter some inputs, and takes those inputs, then writes,
     	 * then we need to semWait those three resources. We must
     	 * do print and input together to not have some weird "jumps"
-    	 * when executing the process so that we ensure the prompmt and input
+    	 * when executing the process so that we ensure the prompt and input
     	 * are done at the same time as is expected.
     	 */
         OperatingSystem.getPrintSemaphore().semWait(this, "print");
@@ -89,7 +89,8 @@ public class Process extends Thread{
         
         
         /*
-         * we release the print and input semaphores - we are done with the user.
+         * we release the print and input semaphores - we are done with the user
+         * prompt.
          */
         OperatingSystem.getPrintSemaphore().semPost(getProcessID(), "print");
         OperatingSystem.getInputSemaphore().semPost(getProcessID(), "input");
@@ -118,35 +119,84 @@ public class Process extends Thread{
     
     private void process3() {
         int x = 0;
+        
+        /*
+         * since this process only prints numbers, then it will first 
+         * claim the print semaphore, then print ALL the numbers, THEN
+         * release the resource. We sempost after all numbers are printed 
+         * because we don't want "cuts" in the printing as opposed to
+         * milestone I.
+         */
         OperatingSystem.getPrintSemaphore().semWait(this, "print");
         while (x < 301) {
             OperatingSystem.printText(x + "\n");
             x++;
         }
         OperatingSystem.getPrintSemaphore().semPost(getProcessID(), "print");
+        
+        /*
+         * Process complete.
+         */
         setProcessState(this, ProcessState.Terminated);
     }
 
     private void process4() {
         int x = 500;
+        /*
+         * since this process only prints numbers, then it will first 
+         * claim the print semaphore, then print ALL the numbers, THEN
+         * release the resource. We sempost after all numbers are printed 
+         * because we don't want "cuts" in the printing as opposed to
+         * milestone I.
+         */
         OperatingSystem.getPrintSemaphore().semWait(this, "print");
         while (x < 1001) {
             OperatingSystem.printText(x + "\n");
             x++;
         }
         OperatingSystem.getPrintSemaphore().semPost(getProcessID(), "print");
+        
+        /*
+         * Process complete.
+         */
         setProcessState(this, ProcessState.Terminated);
     }
 
     private void process5() {
+    	
+    	/*
+    	 * Since process 5 prints a message to prompt the user 
+    	 * to enter some inputs, and takes those inputs, then writes,
+    	 * then we need to semWait those three resources. We must
+    	 * do print and input together to not have some weird "jumps"
+    	 * when executing the process (as opposed to Milestone I)
+    	 *  so that we ensure the prompt and input
+    	 * are done at the same time as is expected.
+    	 */
         OperatingSystem.getPrintSemaphore().semWait(this, "print");
         OperatingSystem.getInputSemaphore().semWait(this, "input");
+        
+        
         OperatingSystem.printText("Enter LowerBound: ");
         String lower = OperatingSystem.TakeInput();
         OperatingSystem.printText("Enter UpperBound: ");
         String upper = OperatingSystem.TakeInput();
+        
+        
+        
+        
+        /*
+         * we release the print and input semaphores - we are done with the user
+         * prompt.
+         */
         OperatingSystem.getPrintSemaphore().semPost(getProcessID(), "print");
         OperatingSystem.getInputSemaphore().semPost(getProcessID(), "input");
+        
+        /*
+         * for this part, no critical sections are accessed, so no need for 
+         * semaphores.
+         */
+        
         int lowernbr = Integer.parseInt(lower);
         int uppernbr = Integer.parseInt(upper);
         String data = "";
@@ -154,9 +204,24 @@ public class Process extends Thread{
         while (lowernbr <= uppernbr) {
             data += lowernbr++ + "\n";
         }
+        
+        
+        /*
+         * once again we access a critical resource. We want to write to a file.
+         * So we take the write semaphore, write the file, then release the 
+         * semaphore.
+         */
         OperatingSystem.getWriteSemaphore().semWait(this, "write");
+        
         OperatingSystem.writefile("P5.txt", data);
+        
         OperatingSystem.getWriteSemaphore().semPost(getProcessID(), "write");
+        
+        
+        
+        /*
+         * Process complete.
+         */
         setProcessState(this, ProcessState.Terminated);
     }
 
