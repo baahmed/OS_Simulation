@@ -40,6 +40,7 @@ public class OperatingSystem {
 	 *once unblocked, to the ready queue. The ready queue is the responsibility
 	 *of the scheduler itself.
 	 */
+
 	public static BinarySemaphore read = new BinarySemaphore();
 	public static BinarySemaphore write = new BinarySemaphore();
 	public static BinarySemaphore print = new BinarySemaphore();
@@ -273,18 +274,18 @@ public class OperatingSystem {
 		//followed by printing the content of a file 3 times
 		//followed by printing 500 to 1000 twice
 		//followed by asking the lower bound and upper bound twice
-		createProcess(1);
-		createProcess(1);
-		createProcess(2);
-		createProcess(3);
-		createProcess(3);
-		createProcess(1);
-		createProcess(1);
-		createProcess(1);
-		createProcess(4);
-		createProcess(4);
-		createProcess(5);
-		createProcess(5);
+//		createProcess(1);
+//		createProcess(1);
+//		createProcess(2);
+//		createProcess(3);
+//		createProcess(3);
+//		createProcess(1);
+//		createProcess(1);
+//		createProcess(1);
+//		createProcess(4);
+//		createProcess(4);
+//		createProcess(5);
+//		createProcess(5);
 		
 		
 //		createProcess(1);
@@ -293,6 +294,37 @@ public class OperatingSystem {
 //		createProcess(3);
 //		createProcess(5);
 //		createProcess(4);
+		
+		
+		///////////REPORT TEST CASES
+		
+		
+		//TEST CASE 2
+		createProcess(1);
+		createProcess(3);
+		
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 	}

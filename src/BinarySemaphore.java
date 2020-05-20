@@ -77,18 +77,13 @@ public class BinarySemaphore {
         /*if resource was not available...
          */
         if (value == 0) {
-        	//TODO: this was left for tracing purposes
-        	//System.out.println("FOR TRACING: Process " + p.getProcessID() + " is now blocked");
-        	
-        	
-        	
-        	
+
         	/*
         	 * first of all, change the process state to waiting (blocked).
         	 */
             Process.setProcessState(p, ProcessState.Waiting);
         	//TODO: this was left for tracing purposes
-        	//System.out.println("should be waiting" + p.getProcessID() + " " +  Process.getProcessState(p));
+        	System.out.println("FOR TRACING: Process " + p.getProcessID() + " gets blocked. STATE: " +  Process.getProcessState(p));
 
         	
         	
@@ -146,8 +141,7 @@ public class BinarySemaphore {
             	 */
                 if (p == freeThisProcess) { 
                 	//TODO: this was left for tracing purposes
-                	System.out.println("FOR TRACING: now exit busy wait");
-                	System.out.println("should be ready" + p.getProcessID() + " " +  Process.getProcessState(p));
+                	System.out.println("FOR TRACING: Process " + p.getProcessID() + " exits busy wait and is now ready. STATE: " +  Process.getProcessState(p));
                 	
                 	//exit the busy wait.
                     break;
@@ -162,9 +156,10 @@ public class BinarySemaphore {
             }
             /*
              * if the process has reached this point,
-             * then it was the chosen one to claim the resouce.
+             * then it was the chosen one to claim the resource.
              * It takes the resource. The process is now ready with it 
-             * until it's selected to execute by the scheduler.
+             * until it's selected to execute by the scheduler. Make value 0
+             * in case it's not.
              */
             
             value = 0; 
