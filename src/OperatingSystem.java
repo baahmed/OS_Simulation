@@ -300,8 +300,15 @@ public class OperatingSystem {
 		
 		
 		//TEST CASE 2
-		createProcess(1);
-		createProcess(3);
+		//createProcess(1);
+		//createProcess(3);
+		
+		//TEST CASE 3
+		createProcess(3); //print 0 to 300
+		createProcess(4); //print 500 to 1000
+		createProcess(5);
+
+
 		
 	
 		
